@@ -59,7 +59,7 @@ def validate(net, val_loader, nums):
     with torch.no_grad():
         for image, mask, shape, name in val_loader:
             image, mask = image.cuda().float(), mask.cuda().float()
-            out2r, out3r, out4r, out5r, enhance_image, A, att = net(image, 1)
+            out2r, out3r, out4r, out5r, enhance_image, A, att, weighted_sum = net(image, 1)
             pred = torch.sigmoid(out2r)
             
             for j, (label, pred) in enumerate(zip(mask.detach().cpu(),pred.detach().cpu())):
@@ -119,7 +119,7 @@ def train(Dataset, Network):
 
         for step, (image, mask) in enumerate(loader):
             image, mask = image.cuda().float(), mask.cuda().float()
-            out2r, out3r, out4r, out5r, enhance_image, A, att = net(image,epoch)
+            out2r, out3r, out4r, out5r, enhance_image, A, att, weighted_sum = net(image,epoch)
             loss_hot = structure_loss(att, mask)
             Loss_TV = 20*L_TV(A)
             loss_spa = torch.mean(L_spa(enhance_image, image))
