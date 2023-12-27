@@ -36,7 +36,7 @@ class Test(object):
         with torch.no_grad():
             for image, mask, shape, name in self.loader:
                 image, mask = image.cuda().float(), mask.cuda().float()
-                out2r, out3r, out4r, out5r, enhance_image, r, x4_fam = self.net(image)
+                out2r, out3r, out4r, out5r, enhance_image, r, x4_fam, weighted_sum = self.net(image)
                 out = out2r
 
                 plt.subplot(221)
@@ -54,7 +54,7 @@ class Test(object):
         with torch.no_grad():
             for image, mask, shape, name in self.loader:
                 image = image.cuda().float()
-                out2r, out3r, out4r, out5r, enhance_image, r, x4_fam = self.net(image, shape)
+                out2r, out3r, out4r, out5r, enhance_image, r, x4_fam, weighted_sum = self.net(image, shape)
                 out   = out2r
                 pred  = (torch.sigmoid(out[0,0])*255).cpu().numpy()
                 pred = (torch.sigmoid(out[0])*255).permute(1, 2, 0).cpu().numpy()
