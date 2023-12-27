@@ -323,7 +323,16 @@ class HDNet(nn.Module):
         out3h = F.interpolate(self.linearr3(out3h), size=shape, mode='bilinear')
         out4h = F.interpolate(self.linearr4(out4h), size=shape, mode='bilinear')
         out5v = F.interpolate(self.linearr5(out5v), size=shape, mode='bilinear')
-        return  out2h, out3h, out4h, out5v, enhance_image, r, x4_fam
+	# Adjust these values as needed	        
+	weight2h = 1.0  
+	weight3h = 1.0  
+	weight4h = 1.0
+	weight5v = 1.0
+	
+	
+	#Calculate weighted sum
+	weighted_sum = weight2h * out2h + weight3h * out3h + weight4h * out4h + weight5v * out5v
+        return  out2h, out3h, out4h, out5v, enhance_image, r, x4_fam, weighted_sum
 
 
     def initialize(self):
